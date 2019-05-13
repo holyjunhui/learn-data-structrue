@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>	</title>
+	<script>	
+
+function Queue(){
+	var item = []
+
+	this.enqueue = function(v){
+		item.push(v)
+	}
+	this.dequeue = function(){
+		return item.shift()
+	}
+	this.front = function(){
+		return item[0]
+	}
+	this.isEmpty = function(){
+		return item.length === 0
+	}
+	this.size = function(){
+		return item.length
+	}
+	this.clear = function(){
+		item = []
+	}
+	this.print = function(){
+		console.log("item",item.toString())
+	}
+}
+function PriorityQueue(){
+	var items = []
+	function QueueElement(element, priority){
+		this.element = element;
+		this.priority = priority;
+	}
+	this.enqueue = function(element,priority){
+		var queueElement = new QueueElement(element,priority)
+
+		console.log("this.isEmty",queueElement)
+		if(this.isEmpty()){
+			// console.log("22")
+			items.push(queueElement)
+		}else{
+			var added = false;
+			// debugger
+			// console.log("items",items.toString)
+			for(var i =0;i<items.length;i++){
+					console.log("items111111",items.length)
+				if(queueElement.priority < items[i].priority){
+					items.splice(i,0,queueElement)
+					added = true;
+					break
+				}
+			}
+			if(!added){
+				items.push(queueElement)
+			}
+		}
+
+	}
+	// 	this.enqueue = function(v){
+	// 		console.log("vvvv",v)
+	// 	items.push(v)
+	// }
+		this.isEmpty = function(){
+		return items.length === 0
+	}
+	this.print = function(){
+		console.log("priorityQueue",items)
+	}
+}
+
+var priorityQueue = new PriorityQueue()
+
+priorityQueue.enqueue("john",2);
+priorityQueue.enqueue("johnsff",4);
+priorityQueue.enqueue("faa",1);
+priorityQueue.enqueue("lijunhi",3);
+priorityQueue.print()
+
+
+function circleQueue(namelist,num){
+
+	var queue = new Queue()
+	for(var i=0;i<namelist.length;i++){
+		queue.enqueue(namelist[i])
+	}
+
+	var eliminated =''
+	while(queue.size()>1){
+			for(var i=0;i<num;i++){
+
+				queue.enqueue(queue.dequeue())
+							// console.log("loglog",queue.size())
+
+			}
+			console.log('quequeu',queue.print())
+			eliminated = queue.dequeue()
+			console.log(eliminated+ '淘汰了')
+	}
+	return queue.dequeue()
+}
+
+
+var name = ['johb','jack','camila','inrg','carl']
+
+var winner = circleQueue(name,7)
+console.log("wininer",winner)
+
+
+
+// 链表的实现
+	
+function linkedList(){
+	 function Node(element){
+		this.element = element;
+		this.next = null
+	}
+	var head = null,length = 0;
+	this.append = function(element){
+		var node = new Node(element),current;
+		if(head == null){
+			head = node
+		}else{
+			current = head
+			while(current.next){
+				current = current.next
+			}
+			current.next = node
+		}
+		length++
+		console.log("node",node)
+	}
+	this.nodeContent = function(){
+		return head
+	}
+
+	this.removeAt = function(position){
+		
+
+		if(position>-1 && position<length){
+			var current = head,index = 0,previous;
+			if(position === 0){
+				head = current.next
+			}else{
+				while(index++ <position){
+					previous = current
+					current = current.next
+				}
+				previous.next = current.next
+			}
+			length--
+			return current.element
+		}else{
+			return null
+		}
+	}
+
+	this.insert = function(position,element){
+		if(position>-1 && position<length){
+			var current = head,index = 0,previous;
+			var node = new Node(element)
+			if(position === 0){
+				node.next = current
+				head = node
+			}else{
+				while(index++ < position){
+					previous = current;
+					current = current.next
+				}
+				node.next = current
+				previous.next = node
+			}
+			length++
+			// console.log("clearQueue(queueName);",current)
+			return true
+		}else{
+			return false
+		}
+
+	}
+
+	this.toString = function(){
+		var current = head,string = ''
+		while(current){
+			string +=',' + current.element;
+			current = current.next
+		}
+		return string.slice(1)
+	}
+	this.indexOf = function(element){
+		var current = head, index =0;
+		while(current){
+			if(element === current.element){
+				return index
+			}
+			index++
+			current = current.next
+		}
+		return -1
+	}
+
+	this.remove  = function(element){
+		var index = this.indexOf(element)
+		return this.removeAt(index)
+	}
+	this.isEmpty = function(){
+		return length ==0
+	}
+	this.size = function(){
+		return length
+	}
+	this.getHead = function(){
+		return head
+	}
+}
+
+// var list = new linkedList()
+// list.append('Some text')
+// list.append('lijunhui')
+// list.append('laomazi')
+
+// // var a = list.removeAt(1)
+// // console.log('aaa',a)
+
+// list.insert(2,'nishi haoren')
+// console.log("nodenode",list.nodeContent())
+// console.log("tosting",list.toString())
+// console.log("indexof",list.indexOf('lijunhui'))
+// console.log("head",list.getHead())
+// 
+// 集合
+	function Set(){
+		var items = {}
+		this.has = function(value){
+			return value in items
+		}
+		this.add = function(value){
+			if(!this.has(value)){
+				items[value] = value
+				return true
+			}
+			return false
+		}
+
+		this.remove = function(value){
+			if(this.has(value)){
+				delete items[value]
+				return true
+
+			}
+			return false
+
+		}
+		this.getItems = function(){
+			return items
+		}
+		this.clear = function(){
+			items = {}
+		}
+		this.size = function(){
+			return Object.keys(items).length
+		}
+		this.values = function(){
+			return Object.keys(items)
+		}
+		this.union = function(otherSet){
+			var unionSet = new Set()
+			var values = this.values()
+			for(var i =0;i<values.length;i++){
+				unionSet.add(values[i])
+			}
+			var value = otherSet.values()
+			console.log("vlue",value)
+			for(var j = 0; j<value.length;j++){
+				unionSet.add(value[j])
+			}
+			console.log("values",unionSet.values())
+			return unionSet;
+		}
+		this.intersection = function(otherSet){
+			var intersectionSet = new Set()
+
+			var values = otherSet.values()
+			for(var i=0;i<values.length;i++){
+				if(otherSet.has(values[i])){
+					intersectionSet.add(values[i])
+				}
+			}
+			return intersectionSet;
+		}
+
+
+		this.diff = function(otherSet){
+			var diffSet = new Set()
+
+			var values = this.values()
+			for(var i=0;i<values.length;i++){
+				if(!otherSet.has(values[i])){
+					diffSet.add(values[i])
+
+				}
+			}
+			return diffSet
+		}
+
+		this.subset = function(otherSet){
+			if(this.size()>otherSet.size()){
+				return false
+			}else{
+				var values = this.values()
+				for(var i=0;i<values.length;i++){
+					if(!otherSet.has(values[i])){
+						return false
+					}
+				}
+				return true
+			}
+		}
+
+	}
+
+var set = new Set()
+set.add('lijunhui')
+set.add('macmen')
+set.add(22)
+
+var setB = new Set()
+
+setB.add(22)
+setB.add('lijunhui')
+
+var inter = setB.subset(set)
+console.log("ineter",inter)
+
+
+
+
+	//1. 冒泡
+	function bubble(arr){
+		console.log("arr of length",arr)
+		// debugger
+		var flag
+		for(var i = 0;i<arr.length-1;i++){
+			 flag = true;
+			for(var j=0;j<arr.length - i;j++){
+				if(arr[j]>arr[j+1]){
+					var temp = arr[j]
+					arr[j] = arr[j+1]
+					arr[j+1] = temp
+					flag = false;
+				}
+			}
+			if(flag){
+				break;
+			}
+		}
+
+		return arr
+
+	}
+
+//2.  console.log("bubble",bubble([33,4,2,43,1,0]))
+ 	// 插入排序
+ 	//是选定当前的数值，比较当前数值和前一个数值 ，从右向前开始比较。互换位置
+ 	function insert_sort(arr){
+ 		var temp ,insert_num
+ 		for(var i =1; i<arr.length;i++){
+ 			insert_num = arr[i]
+ 			for(var j = i-1; insert_num<arr[j]&&j>=0;j--){
+ 				arr[j+1] = arr[j]
+ 				arr[j] = insert_num
+ 			}
+
+ 		}
+ 		return arr
+ 	}
+ 	
+ 	// console.log("insert_srot",insert_sort([3,4,22,11,2,41]))
+ 	
+ 	
+ 	//3. 选择排序 
+ 	// 选定当前的index为标准，在剩余的数组中找到最小的位置，与当前的index进行比较，互换位置
+ 	function select_sort(arr){
+ 		var minIndex, len = arr.length;
+ 		for(var i =0;i<len-1;i++){
+ 			minIndex = i
+ 			for(var j = i+1;j<len;j++){
+ 				if(arr[j]<arr[minIndex]){
+ 					minIndex = j;
+ 				}
+ 			}
+ 			var temp = arr[i]
+ 			arr[i] = arr[minIndex]
+ 			arr[minIndex] = temp
+ 		}
+ 		return arr
+ 	}
+ 	
+ 	// console.log("select_sort",select_sort([3,4,1,35,31,2]))
+
+//4. 快速排序
+//嵌套排序，根据中间数组的index 和元素 进行判断，依次循环
+ 	function quick_sort(arr){
+ 		if(arr.length<=1){
+ 			return arr
+ 		}
+ 		var preIndex = Math.floor(arr.length/2)
+ 		var pre = arr.splice(preIndex,1)[0]
+
+ 		var left = []
+ 		var right = []
+
+ 		for(var i =0;i<arr.length;i++){
+ 			if(arr[i]<pre){
+ 				left.push(arr[i])
+ 			}else{
+ 				right.push(arr[i])
+ 			}
+
+ 		}
+ 		return quick_sort(left).concat([pre],quick_sort(right))
+ 	}
+
+
+ 	// console.log("quick_sort",quick_sort([3,4,1,34,2,43,21]))
+ 	
+
+ 	// 5. 归并
+ 	// 归并排序 mergesort函数是寻找左右的值，merge函数是归并并且排序。
+ 	
+ 	function mergeSort(arr){
+ 		var len = arr.length;
+ 		if(len > 1){
+ 			var middle = Math.floor(len/2)
+ 			var left = arr.slice(0,middle)
+ 			var right = arr.slice(middle)
+ 			return merge(mergeSort(left),mergeSort(right))
+ 		}else{
+ 			return arr
+ 		}
+ 	}
+
+
+ 	function merge(left,right){
+ 		var arr = []
+ 		while(left.length && right.length){
+ 			if(left[0]<right[0]){
+ 				arr.push(left.shift())
+ 			}else{
+ 				arr.push(right.shift())
+ 			}
+ 		}
+ 		return arr.concat(left,right)
+ 	}
+ 	
+
+// console.log("merge",mergeSort([3,33,2,12,4,6,0]))
+
+// 使用reduce比较出最大值
+var arr  = [2,3,1,34,21,25,4]
+var arrs = arr.reduce((x,y)=> (x>y) ? x:y)
+// console.log("arr",arrs)
+
+
+// 堆排序
+
+	// / 交换两个节点
+function swap(A, i, j) {
+  let temp = A[i];
+  A[i] = A[j];
+  A[j] = temp; 
+}
+
+// 将 i 结点以下的堆整理为大顶堆，注意这一步实现的基础实际上是：
+// 假设 结点 i 以下的子堆已经是一个大顶堆，shiftDown函数实现的
+// 功能是实际上是：找到 结点 i 在包括结点 i 的堆中的正确位置。后面
+// 将写一个 for 循环，从第一个非叶子结点开始，对每一个非叶子结点
+// 都执行 shiftDown操作，所以就满足了结点 i 以下的子堆已经是一大
+//顶堆
+function shiftDown(A, i, length) {
+  let temp = A[i]; // 当前父节点
+// j<length 的目的是对结点 i 以下的结点全部做顺序调整
+  for(let j = 2*i+1; j<length; j = 2*j+1) {
+    temp = A[i];  // 将 A[i] 取出，整个过程相当于找到 A[i] 应处于的位置
+    if(j+1 < length && A[j] < A[j+1]) { 
+      j++;   // 找到两个孩子中较大的一个，再与父节点比较
+    }
+    if(temp < A[j]) {
+      swap(A, i, j) // 如果父节点小于子节点:交换；否则跳出
+      i = j;  // 交换后，temp 的下标变为 j
+    } else {
+      break;
+    }
+  }
+}
+
+// 堆排序
+function heapSort(A) {
+  // 初始化大顶堆，从第一个非叶子结点开始
+  for(let i = Math.floor(A.length/2-1); i>=0; i--) {
+    shiftDown(A, i, A.length);
+  }
+  // 排序，每一次for循环找出一个当前最大值，数组长度减一
+  for(let i = Math.floor(A.length-1); i>0; i--) {
+    swap(A, 0, i); // 根节点与最后一个节点交换
+    shiftDown(A, 0, i); // 从根节点开始调整，并且最后一个结点已经为当
+                         // 前最大值，不需要再参与比较，所以第三个参数
+                         // 为 i，即比较到最后一个结点前一个即可
+  }
+}
+
+let Arr = [4, 6, 8, 5, 9, 1, 2, 5, 3, 2];
+heapSort(Arr);
+// console.log("heapsort",Arr);
+
+
+// let Arr = [4, 6, 8, 5, 9, 1, 2, 5, 3, 2];
+// heapSort(Arr);
+// console.log("heapsort",Arr);
+
+	// console.log("heapSort",heapSort([3,22,6,9,53,26,34]))
+	// 计数排序
+	// 技术排序的思想就是把现有的数组统一放到另外一个数组里面，通过计算另外一个数组中个数，再循环遍历出来。
+	function counting_sort(arr){
+		var max = arr[0]
+		var min = arr[0]
+		for(var i=0;i<arr.length;i++){
+			if(arr[i] > max){
+				max = arr[i]
+			}
+			if(arr[i] < min){
+				min = arr[i]
+			}
+		}
+
+		var bucket = new Array(max - min +1).fill(0),
+		sortedIndex = 0,
+		arrlen = arr.length,
+		bucketLen = max - min + 1;
+		for(var i=0;i<arrlen;i++){
+			if(!bucket[arr[i]]){
+				bucket[arr[i]] = 0;
+			}
+			bucket[arr[i]-min]++
+		}
+
+		for(var j=0;j<bucketLen;j++){
+			while(bucket[j]>0){
+				arr[sortedIndex++] = j + min;
+				bucket[j]--
+			}
+		}
+		return arr;
+
+	}
+	
+	
+	// console.log("counting",counting_sort([-3,-4,-2,15,1,5,5]))
+	// 希尔排序
+	function shellSort(arr){
+		var len = arr.length,
+			temp,
+			gap = 1;
+			while(gap<len/3){
+				gap = gap*3 + 1;
+			}
+
+			for(gap;gap>0;gap = Math.floor(gap/3)){
+				for(var i=gap; i<len;i++){
+					temp = arr[i]
+					for(var j=i-gap;j>=0 && arr[j]> temp;j-=gap){
+						arr[j+gap] = arr[j];
+					}
+					arr[j+gap] = temp;
+				}
+			}
+			return arr;
+	}
+
+
+// console.log("shellSort",shellSort([3,4,1,4,32,43,12]))
+var arr = [2,5,3,0,2,8,0,3,4,3]
+
+// 桶排序
+// 
+   function bucketSort(array, num){
+    if(array.length <= 1){
+      return array
+    }
+    var n = array.length;
+    var min = Math.min.apply(0, array)
+    var max = Math.max.apply(0, array)
+    if(max === min){
+       return array
+    }
+    var capacity = (max - min + 1) /num;
+    var buckets = new Array(max - min + 1)
+    for(var i = 0; i < n; i++){
+      var el = array[i];//el可能是负数
+      var index = Math.floor((el - min) / capacity)
+      var bucket = buckets[index]
+      if(bucket){
+         var jn = bucket.length;
+         if(el >= bucket[jn-1]){
+            bucket[jn] = el
+         }else{
+            // insertSort: 注释用
+            for(var j = 0; j < jn; j++){
+                if(bucket[j] > el){
+                    while(jn > j){ //全部向后挪一位
+                        bucket[jn] = bucket[jn-1]
+                        jn--
+                    }
+                    bucket[j] = el //让el占据bucket[j]的位置
+                    // break insertSort;
+                    break;
+                }
+            }
+         }
+      }else{
+         buckets[index] = [el]
+      }
+    }
+    var index = 0
+    for(var i = 0; i < num; i++){
+        var bucket = buckets[i]
+        for(var k = 0, kn = bucket.length; k < kn; k++){
+            array[index++] = bucket[k]
+        }
+    }
+    return array;
+ }
+ // console.log(  bucketSort(arr,4) )
+
+
+
+
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
